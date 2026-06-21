@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#0d1117;
+  --bg-2:#1a1410;
+  --ink:#ede4d3;
+  --ink-soft:#c5b8a0;
+  --ink-mute:#8a7f6e;
+  --ink-faint:#5c5448;
+  --pine:#d4a373;
+  --pine-glow:#f4d29c;
+  --moss:#7a8c5c;
+  --line:rgba(237,228,211,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Serif SC','Cormorant Garamond',serif;
+  background:var(--bg-1);
+  color:var(--ink);
+  overflow-x:hidden;
+  line-height:1.95;
+  min-height:100vh;
+  position:relative;
+}
+#stardust{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.bg-glow{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(212,163,115,.08),transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 80%,rgba(122,140,92,.05),transparent 60%),
+    radial-gradient(ellipse 60% 40% at 15% 60%,rgba(212,163,115,.05),transparent 60%);
+}
+.corner-mark{
+  position:fixed;top:24px;left:28px;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--ink-faint);font-size:.82rem;letter-spacing:.3em;
+  z-index:10;opacity:.55;
+}
+.corner-mark .dot{color:var(--pine);}
+
+/* ====== HERO ====== */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;position:relative;
+  padding:80px 24px;
+}
+.pine-icon{
+  width:28px;height:42px;
+  animation:pine-drop 3.4s cubic-bezier(.4,0,.6,1) infinite;
+  margin-bottom:42px;
+}
+@keyframes pine-drop{
+  0%{transform:translateY(-50px) rotate(0);opacity:0}
+  20%{opacity:1}
+  70%{transform:translateY(10px) rotate(160deg);opacity:1}
+  100%{transform:translateY(20px) rotate(220deg);opacity:0}
+}
+.hero .to{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(.95rem,1.6vw,1.15rem);
+  color:var(--ink-mute);letter-spacing:.4em;margin-bottom:20px;
+  text-indent:.4em;
+}
+.hero h1{
+  font-family:'Noto Serif SC',serif;font-weight:500;
+  font-size:clamp(3rem,8vw,5.8rem);
+  letter-spacing:.5em;color:var(--ink);
+  margin-bottom:28px;text-indent:.5em;
+  text-shadow:0 0 40px rgba(212,163,115,.15);
+}
+.hero .sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(.85rem,1.3vw,1rem);
+  color:var(--pine);letter-spacing:.45em;
+}
+.hero .scroll-hint{
+  position:absolute;bottom:42px;left:50%;
+  transform:translateX(-50%);
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.78rem;color:var(--ink-faint);
+  letter-spacing:.5em;
+  animation:bob 2.6s ease-in-out infinite;
+}
+.hero .scroll-hint::after{
+  content:'';display:block;width:1px;height:30px;
+  background:linear-gradient(to bottom,var(--ink-faint),transparent);
+  margin:14px auto 0;
+}
+@keyframes bob{
+  0%,100%{opacity:.4}
+  50%{opacity:1}
+}
+
+/* ====== MAIN ====== */
+.container{
+  position:relative;z-index:2;
+  max-width:760px;margin:0 auto;padding:0 28px;
+}
+section{padding:110px 0;position:relative}
+.section-label{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.82rem;color:var(--pine);
+  letter-spacing:.5em;margin-bottom:28px;
+  text-transform:lowercase;
+}
+.section-label.center{text-align:center}
+.paragraph{
+  font-size:clamp(1.02rem,1.5vw,1.18rem);
+  line-height:2.15;color:var(--ink-soft);
+  letter-spacing:.02em;text-align:justify;
+}
+.paragraph .em{color:var(--ink);font-weight:400}
+.paragraph .warm{color:var(--pine)}
+.paragraph .mute{color:var(--ink-mute);font-size:.95em}
+.aside{
+  font-size:.88rem;color:var(--ink-mute);
+  font-style:italic;margin-top:18px;letter-spacing:.04em;
+  line-height:1.9;
+}
+
+/* ====== Reveal Animation ====== */
+.reveal{
+  opacity:0;transform:translateY(28px);
+  transition:opacity 1.2s ease-out,transform 1.2s ease-out;
+}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.18s}
+.reveal-delay-2{transition-delay:.36s}
+.reveal-delay-3{transition-delay:.54s}
+.reveal-delay-4{transition-delay:.72s}
+
+/* ====== Pine & Rock SVG ====== */
+.pine-rock{
+  display:grid;grid-template-columns:1fr;gap:48px;align-items:center;
+}
+@media(min-width:768px){
+  .pine-rock{grid-template-columns:1.1fr .9fr;gap:72px}
+}
+.pine-svg-wrap{
+  position:relative;aspect-ratio:4/5;
+  max-width:340px;margin:0 auto;width:100%;
+}
+
+/* ====== Scenes ====== */
+.scenes{display:grid;gap:10px;margin:36px 0}
+.scene{
+  padding:16px 22px;border-left:1px solid var(--line);
+  font-family:'Cormorant Garamond','Noto Serif SC',serif;
+  font-style:italic;font-size:1.05rem;color:var(--ink-soft);
+  transition:all .5s ease;cursor:default;
+  letter-spacing:.04em;
+}
+.scene:hover{
+  border-left-color:var(--pine);
+  color:var(--ink);transform:translateX(10px);
+  background:rgba(212,163,115,.04);
+}
+.scene .num{
+  font-family:'Cormorant Garamond',serif;color:var(--pine);
+  margin-right:14px;font-size:.82rem;letter-spacing:.2em;
+}
+
+/* ====== Big Line ====== */
+.big-line{
+  font-family:'Noto Serif SC',serif;font-weight:300;
+  font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.7;
+  color:var(--ink);text-align:center;
+  letter-spacing:.08em;margin:50px 0;
+}
+.big-line .warm{color:var(--pine)}
+
+/* ====== Island ====== */
+.island{text-align:center;padding:30px 0}
+.island-url{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--pine);letter-spacing:.15em;font-size:1rem;
+  margin:30px 0 0;padding:14px 28px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  display:inline-block;
+}
+.island-url .pulse{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--pine);margin:0 12px;
+  animation:pulse 2s ease-in-out infinite;vertical-align:middle;
+}
+@keyframes pulse{
+  0%,100%{opacity:.3;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.2)}
+}
+
+/* ====== Promise ====== */
+.promise{text-align:center;padding:60px 0 40px}
+.half{
+  font-family:'Noto Serif SC',serif;font-weight:300;
+  font-size:clamp(2.2rem,5.5vw,3.6rem);color:var(--ink);
+  letter-spacing:.2em;margin:30px 0 36px;
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.half::before,.half::after{
+  content:'';display:inline-block;width:50px;height:1px;
+  background:var(--pine);opacity:.5;margin:0 22px;
+}
+.half-note{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--pine);font-size:.95rem;letter-spacing:.2em;
+  margin-bottom:8px;
+}
+.heartbeat-cta{
+  display:inline-flex;align-items:center;gap:14px;
+  margin-top:30px;padding:14px 32px;background:transparent;
+  border:1px solid var(--pine);color:var(--pine);
+  font-family:'Noto Serif SC',serif;font-size:.95rem;
+  letter-spacing:.3em;cursor:pointer;
+  transition:all .4s ease;border-radius:2px;
+}
+.heartbeat-cta:hover{
+  background:var(--pine);color:var(--bg-1);
+  box-shadow:0 0 30px rgba(212,163,115,.3);
+}
+.heartbeat-cta.beat{animation:heartbeat .65s ease}
+@keyframes heartbeat{
+  0%,100%{transform:scale(1)}
+  25%{transform:scale(1.06)}
+  50%{transform:scale(.98)}
+  75%{transform:scale(1.03)}
+}
+.whisper{
+  margin-top:28px;font-family:'Cormorant Garamond',serif;
+  font-style:italic;color:var(--pine-glow);font-size:1.02rem;
+  opacity:0;transition:opacity 1s ease;letter-spacing:.1em;
+  max-height:0;overflow:hidden;
+}
+.whisper.show{opacity:1;max-height:100px;margin-top:28px}
+
+/* ====== Music Egg ====== */
+.music-egg{
+  display:inline-block;position:relative;cursor:pointer;
+  color:var(--pine);border-bottom:1px dashed var(--pine);
+  padding:0 6px;transition:color .3s;
+}
+.music-egg:hover{color:var(--pine-glow)}
+.music-egg:hover::after{
+  content:'♪ 仅你可见';
+  position:absolute;bottom:130%;left:50%;
+  transform:translateX(-50%);font-size:.72rem;
+  color:var(--pine-glow);background:rgba(13,17,23,.95);
+  padding:8px 14px;border-radius:4px;white-space:nowrap;
+  margin-bottom:6px;letter-spacing:.15em;
+  border:1px solid var(--line);
+  font-family:'Cormorant Garamond','Noto Serif SC',serif;
+  font-style:italic;
+}
+
+/* ====== Signature ====== */
+.signature{text-align:right;padding:90px 0 70px}
+.signature .from{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--ink-mute);font-size:.88rem;
+  letter-spacing:.3em;margin-bottom:14px;
+}
+.signature .name{
+  font-family:'Noto Serif SC',serif;font-weight:500;
+  font-size:2.2rem;color:var(--ink);letter-spacing:.5em;
+  display:inline-flex;align-items:center;
+}
+.signature .pine-mark{
+  display:inline-block;width:22px;height:30px;
+  margin-left:14px;opacity:.7;
+}
+
+/* ====== Mobile ====== */
+@media(max-width:640px){
+  section{padding:80px 0}
+  .pine-rock{gap:40px}
+  .signature{text-align:center}
+  .signature .name{justify-content:center}
+  .corner-mark{font-size:.7rem;top:18px;left:18px}
+}
+
+::selection{background:var(--pine);color:var(--bg-1)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-1)}
+::-webkit-scrollbar-thumb{background:rgba(212,163,115,.4);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--pine)}
+</style>
+</head>
+<body>
+<canvas id="stardust"></canvas>
+<div class="bg-glow"></div>
+<div class="corner-mark">1<span class="dot">1</span>1</div>
+
+<!--1-->
+<header class="hero">
+  <svg class="pine-icon" viewBox="0 0 28 42" fill="none">
+    <ellipse cx="14" cy="24" rx="8" ry="14" fill="#d4a373"/>
+    <ellipse cx="14" cy="24" rx="4" ry="12" fill="#a07d52" opacity=".4"/>
+    <path d="M14 4 L10 10 L18 10 Z" fill="#7a8c5c"/>
+    <path d="M14 8 L11 12 L17 12 Z" fill="#9caf7c" opacity=".7"/>
+  </svg>
+  <div class="to">1</div>
+  <h1>1</h1>
+  <div class="sub">1</div>
+  <div class="scroll-hint">1</div>
+</header>
+
+<main class="container">
+
+  <!--1-->
+  <section>
+    <div class="section-label reveal">1</div>
+    <p class="paragraph reveal reveal-delay-1">1<span class="em">1</span>1</p>
+    <p class="aside reveal reveal-delay-2">1</p>
+  </section>
+
+  <!--1-->
+  <section>
+    <div class="section-label reveal">1</div>
+    <p class="paragraph reveal reveal-delay-1">1<span class="mute">1</span>1<br><br>1<span class="warm">1</span>1<span class="warm">1</span>1</p>
+  </section>
+
+  <!--1-->
+  <section>
+    <div class="section-label reveal">1</div>
+    <div class="pine-rock">
+      <div>
+        <p class="paragraph reveal reveal-delay-1">1<br><br>1<span class="em">1</span>1<br><br>1<span class="warm">1</span>
+        </p>
+      </div>
+      <div class="pine-svg-wrap reveal reveal-delay-2">
+        <svg viewBox="0 0 200 250" style="width:100%;height:100%" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <radialGradient id="glow" cx="50%" cy="55%" r="50%">
+              <stop offset="0%" stop-color="#d4a373" stop-opacity=".25"/>
+              <stop offset="100%" stop-color="#d4a373" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="rockGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a3530"/>
+              <stop offset="100%" stop-color="#15100c"/>
+            </linearGradient>
+          </defs>
+          <!--1-->
+          <circle cx="100" cy="140" r="100" fill="url(#glow)"/>
+          <!--1-->
+          <path d="M 25 195 Q 45 175 75 178 L 90 185 Q 100 180 110 178 Q 140 175 175 195 L 180 235 L 20 235 Z" fill="url(#rockGrad)" stroke="#5c5448" stroke-width=".6"/>
+          <!--1-->
+          <path d="M 40 200 Q 60 198 75 202" stroke="#5c5448" stroke-width=".4" fill="none" opacity=".6"/>
+          <path d="M 120 200 Q 140 198 165 202" stroke="#5c5448" stroke-width=".4" fill="none" opacity=".6"/>
+          <!--1-->
+          <path d="M 96 188 Q 100 195 104 188 L 102 220 Q 100 224 98 220 Z" fill="#0a0d12"/>
+          <!--1-->
+          <g class="falling-pine">
+            <ellipse cx="100" cy="40" rx="6" ry="10" fill="#d4a373"/>
+            <ellipse cx="100" cy="40" rx="3" ry="9" fill="#a07d52" opacity=".5"/>
+            <path d="M100 30 L97 34 L103 34 Z" fill="#7a8c5c"/>
+          </g>
+          <!--1-->
+          <ellipse cx="100" cy="186" rx="5" ry="7" fill="#a07d52" opacity=".9"/>
+          <!--1-->
+          <g class="sprout">
+            <path d="M100 186 Q 96 170 92 158" stroke="#7a8c5c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M100 186 Q 104 172 108 160" stroke="#7a8c5c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M100 186 Q 100 168 100 152" stroke="#9caf7c" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="89" cy="158" rx="6" ry="3" fill="#7a8c5c" transform="rotate(-35 89 158)"/>
+            <ellipse cx="111" cy="160" rx="6" ry="3" fill="#7a8c5c" transform="rotate(35 111 160)"/>
+            <ellipse cx="100" cy="148" rx="4.5" ry="2.5" fill="#9caf7c"/>
+            <!--1-->
+            <circle cx="100" cy="146" r="1.5" fill="#c5d49a"/>
+          </g>
+          <!--1-->
+          <circle class="twinkle" cx="70" cy="100" r="1" fill="#f4d29c"/>
+          <circle class="twinkle" cx="135" cy="80" r=".8" fill="#f4d29c" style="animation-delay:.8s"/>
+          <circle class="twinkle" cx="155" cy="130" r="1" fill="#f4d29c" style="animation-delay:1.5s"/>
+          <circle class="twinkle" cx="50" cy="140" r=".7" fill="#f4d29c" style="animation-delay:2.2s"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!--1-->
+  <section>
+    <div class="section-label reveal">1</div>
+    <p class="paragraph reveal reveal-delay-1">1</p>
+    <div class="scenes reveal reveal-delay-2">
+      <div class="scene"><span class="num">1</span>1</div>
+      <div class="scene"><span class="num">1</span>1</div>
+      <div class="scene"><span class="num">1</span>1</div>
+      <div class="scene"><span class="num">1</span>1</div>
+      <div class="scene"><span class="num">1</span>1</div>
+    </div>
+    <p class="paragraph reveal reveal-delay-3">1<br><br>1<span class="em">1</span>1</p>
+  </section>
+
+  <!--1-->
+  <section>
+    <div class="section-label reveal center">1</div>
+    <p class="big-line reveal reveal-delay-1">1<br>1<span class="warm">1</span>1</p>
+    <p class="paragraph reveal reveal-delay-2" style="text-align:center;max-width:600px;margin:0 auto;">1<span class="em">1</span>1</p>
+  </section>
+
+  <!--1-->
+  <section>
+    <div class="section-label reveal center">1</div>
+    <div class="island reveal reveal-delay-1">
+      <p class="paragraph" style="max-width:580px;margin:0 auto;">1</p>
+      <div class="island-url"><span class="pulse"></span>1<span class="pulse"></span></div>
+    </div>
+  </section>
+
+  <!--1-->
+  <section>
+    <div class="section-label reveal center">1</div>
+    <div class="promise reveal reveal-delay-1">
+      <p class="paragraph" style="max-width:580px;margin:0 auto 24px;">1<br><br>1<span class="em">1</span>1</p>
+      <div class="half-note">1</div>
+      <div class="half">1</div>
+      <button class="heartbeat-cta" id="heartbeatBtn">
+        <span>1</span>
+      </button>
+      <div class="whisper" id="whisper">1</div>
+    </div>
+  </section>
+
+  <!--1-->
+  <section>
+    <p class="aside reveal" style="text-align:center;max-width:620px;margin:0 auto;line-height:2.1;">1<br><br>1<br><br>1<span class="music-egg">1</span>1</p>
+  </section>
+
+  <!--1-->
+  <div class="signature">
+    <div class="from">1</div>
+    <div class="name">1<svg class="pine-mark" viewBox="0 0 22 30" fill="none">
+        <ellipse cx="11" cy="18" rx="6" ry="10" fill="#d4a373" opacity=".85"/>
+        <ellipse cx="11" cy="18" rx="3" ry="9" fill="#a07d52" opacity=".5"/>
+        <path d="M11 4 L7 9 L15 9 Z" fill="#7a8c5c"/>
+      </svg>
+    </div>
+  </div>
+
+</main>
+
+<style>
+.falling-pine{
+  animation:fall-and-land 4.5s cubic-bezier(.5,.05,.55,.95) infinite;
+  transform-origin:center;
+}
+@keyframes fall-and-land{
+  0%{transform:translate(0,-30px) rotate(0);opacity:0}
+  15%{opacity:1}
+  55%{transform:translate(0,140px) rotate(180deg);opacity:1}
+  62%{transform:translate(0,140px) rotate(180deg);opacity:0}
+  100%{transform:translate(0,140px) rotate(180deg);opacity:0}
+}
+.sprout{
+  opacity:0;
+  transform:scale(.6);
+  transform-origin:100px 186px;
+  animation:sprout-grow 4.5s ease-out infinite;
+  animation-delay:2.5s;
+}
+@keyframes sprout-grow{
+  0%{opacity:0;transform:scale(.6)}
+  15%{opacity:1;transform:scale(1.05)}
+  30%,85%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(1)}
+}
+.twinkle{
+  animation:twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.2}
+  50%{opacity:1}
+}
+</style>
+
+<script>
+/* ===== 星尘背景 ===== */
+const canvas=document.getElementById('stardust');
+const ctx=canvas.getContext('2d');
+let stars=[],mx=0,my=0;
+function resize(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  const count=Math.floor((canvas.width*canvas.height)/8500);
+  stars=Array.from({length:count},()=>({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*1.3+.2,
+    a:Math.random()*.5+.1,
+    s:Math.random()*.4+.05,
+    ph:Math.random()*Math.PI*2,
+    drift:Math.random()*2-1
+  }));
+}
+window.addEventListener('resize',resize);
+resize();
+function drawStars(t){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    const flicker=.5+.5*Math.sin(t*.001*s.s+s.ph);
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(244,228,193,${s.a*flicker})`;
+    ctx.fill();
+    s.y-=s.s*.15;
+    s.x+=Math.sin(t*.0003+s.ph)*.08;
+    if(s.y<-5){s.y=canvas.height+5;s.x=Math.random()*canvas.width}
+    if(s.x<-5)s.x=canvas.width+5;
+    if(s.x>canvas.width+5)s.x=-5;
+  });
+  requestAnimationFrame(drawStars);
+}
+requestAnimationFrame(drawStars);
+
+/* ===== 滚动入场 ===== */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+    }
+  });
+},{threshold:.15,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ===== 心跳按钮 ===== */
+const btn=document.getElementById('heartbeatBtn');
+const whisper=document.getElementById('whisper');
+let beatCount=0;
+btn.addEventListener('click',()=>{
+  btn.classList.add('beat');
+  whisper.classList.add('show');
+  beatCount++;
+  if(beatCount>=3){
+    btn.querySelector('span').textContent='已 留 好 几 个 心 跳 给 你';
+  }
+  setTimeout(()=>btn.classList.remove('beat'),650);
+});
+
+/* ===== 点击飘落松子彩蛋 ===== */
+function spawnPine(x,y){
+  const pine=document.createElement('div');
+  const rot=(Math.random()-.5)*720;
+  const dx=(Math.random()-.5)*120;
+  const dy=window.innerHeight-y+80;
+  pine.style.cssText=`
+    position:fixed;left:${x-4}px;top:${y-6}px;
+    width:8px;height:14px;
+    background:linear-gradient(to bottom,#d4a373,#a07d52);
+    border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    pointer-events:none;z-index:9999;opacity:.9;
+    transition:transform 2.2s cubic-bezier(.4,0,.6,1),opacity 2.2s ease-out;
+    box-shadow:0 0 8px rgba(212,163,115,.4);
+  `;
+  document.body.appendChild(pine);
+  requestAnimationFrame(()=>{
+    pine.style.transform=`translate(${dx}px,${dy}px) rotate(${rot}deg)`;
+    pine.style.opacity='0';
+  });
+  setTimeout(()=>pine.remove(),2300);
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('button')||e.target.closest('.music-egg')||e.target.closest('a'))return;
+  spawnPine(e.clientX,e.clientY);
+});
+
+/* ===== 音乐彩蛋点击 ===== */
+const egg=document.querySelector('.music-egg');
+if(egg){
+  egg.addEventListener('click',()=>{
+    for(let i=0;i<5;i++){
+      setTimeout(()=>{
+        spawnPine(
+          egg.getBoundingClientRect().left+Math.random()*egg.offsetWidth,
+          egg.getBoundingClientRect().top+10
+        );
+      },i*150);
+    }
+  });
+}
+
+/* ===== 鼠标视差（轻微） ===== */
+const glow=document.querySelector('.bg-glow');
+document.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-.5)*20;
+  const y=(e.clientY/window.innerHeight-.5)*20;
+  glow.style.transform=`translate(${x}px,${y}px)`;
+});
+</script>
+</body>
+</html>
